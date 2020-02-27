@@ -1,0 +1,39 @@
+{
+  "name": "302-group-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ShareTea.js",
+  "scripts": {
+  	"start": "nodemon -w app.js",
+  	"watch": "webpack --mode production --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brianyau0309/302-Group-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brianyau0309/302-Group-Project/issues"
+  },
+  "homepage": "https://github.com/brianyau0309/302-Group-Project#readme",
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.6",
+    "nodemon": "^1.19.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.1",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.2",
+    "oracledb": "^4.2.0"
+  }
+}
