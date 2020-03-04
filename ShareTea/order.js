@@ -1,35 +1,18 @@
-'use stritc'
 const express = require('express')
+const router = express.Router()
 const fs = require('fs')
-const fetch = require('node-fetch')
-const body_parser = require('body-parser')
-const DBConn = require('./DBConn').DBConn
+const DBConn = require('../DBConn').DBConn
 const DBInfo = JSON.parse(fs.readFileSync("ShareTea.json"))
-
-const app = express()
-app.use(body_parser.json())
 const db = new DBConn(DBInfo)
-const log = `\x1b[32m[Log][${new Date().toLocaleString()}] - \x1b[33m`
-const endlog = '\x1b[0m'
 
-app.all('*', (req, res, next) => {
-  let ip = req.headers['x-forwarded-for'] ||
-    req.connection.remoteAddress ||
-    req.socket.remoteAddress ||
-    req.connection.socket.remoteAddress
-  if (ip.includes('::ffff:')) {ip = ip.replace('::ffff:', '')}
-
-  console.log(log + `${ip} ${req.method} ${req.url}` + endlog)
-  next()
+router.get('/:id', (req, res, next) => {
+  // response Order Information by ID
 })
 
-app.get('/api/item', (req, res) => {
-  db.execute(`SELECT * FROM item`).then(result => {
-    res.status(200).json(result.rows)
-  })
-})
-
-app.post('/api/order', (req, res) => {
+router.post('/', (req, res, next) => {
+  // Validate Data
+  // Create order
+  // Response Success Message
   try {
     const data = req.body.orderData
 
@@ -59,7 +42,4 @@ app.post('/api/order', (req, res) => {
   }
 })
 
-app.listen(3000, () => {
-  console.log(log + 'ShareTea Nodejs Server: Port 3000' + endlog)
-  db.execute('SELECT * FROM v$version').then(result => console.log(log+result.rows[0].BANNER+endlog))
-})
+module.exports = router

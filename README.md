@@ -1,10 +1,12 @@
 # 302 Group Project
 
+`npm install`: Install Modules
+
 `npm run ShareTea`: Start ShareTea Server
 
 `npm run FoodPanda`: Start Food Panda Server
 
-`npm run test`: Run test file
+`npm test`: Run test file
 
 ShareTea.json/FoodPanda.json:
 
@@ -25,3 +27,4 @@ ShareTea.json/FoodPanda.json:
 | Express               | 4.17.1  | Web Application Framework |
 | node-fetch            | 2.6.0   | fetch polyfill            |
 | nodemon               | 2.0.2   | Monitor                   |
+| morgan                | 1.9.1   | Logger                    |
