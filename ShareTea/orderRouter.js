@@ -3,8 +3,24 @@ const router = express.Router()
 const Order = require('./Order')
 const order = new Order
 
+
 router.get('/:id', (req, res, next) => {
   // response Order Information according to ID
+  let order_id = req.params.id
+  ,output 
+  order.get_order(order_id).then(orders_data => {
+    output=orders_data
+    order.get_item_code(order_id).then(order_item_data => {
+      output["order_item_data"]=(order_item_data)
+      order_item_data.forEach(item =>{
+        console.log(item.ITEM_CODE,order_id,item.ITEM_SEQ)
+        order.get_remark(item.ITEM_CODE,order_id,item.ITEM_SEQ).then( remarks =>{
+          item.remarks=remarks
+          res.status(200).json(output)
+        })
+      })
+    })
+  })
 })
 
 router.post('/', (req, res, next) => {
