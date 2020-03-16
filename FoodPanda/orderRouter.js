@@ -18,10 +18,13 @@ router.post('/', (req, res, next) => {
     }).then(response => {
       if (response.ok) {
         response.json().then(result => {
-          res.status(200).json(result)
+          console.log(result)
+          res.status(200).json({order: 'Success'})
         })
       } else {
-        res.status(400).json({ Error: response })
+        response.json().then(result => { 
+          res.status(400).json(result)
+        })
       }
     })
   } catch (err) {

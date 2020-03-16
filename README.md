@@ -6,7 +6,7 @@
 
 `npm run FoodPanda`: Start Food Panda Server
 
-`npm test`: Run test file
+`npm test 1/2/3`: Run test file with different sample data by using parameter 1/2/3
 
 ShareTea.json/FoodPanda.json:
 

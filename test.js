@@ -24,6 +24,23 @@ const sampleData = {
     }
   ]
 }
+const sampleData2 = {
+  branch_code: "B0012",
+  order_time: new Date().toLocaleString().replace('/', '-').replace(',', '') ,
+  order_items: [
+    {
+      code: "0001",
+      seq: 1,
+      size: "LARGE",
+      remarks: ["02", "05"]
+    }
+  ]
+}
+const sampleData3 = {
+  branch_code: "B002",
+  order_time: new Date().toLocaleString().replace('/', '-').replace(',', '') ,
+  order_items: []
+}
 
 const test = (orderData) => {
   fetch('http://localhost:3001/api/order', {
@@ -35,8 +52,19 @@ const test = (orderData) => {
       res.json().then(result => {
         console.log(result)
       })
+    } else {
+      res.json().then(result => {
+        console.log(result)
+      })
     }
   })
 }
 
-test(sampleData)
+process.argv.forEach((val, index) => {
+  if (index === 2) {
+    if (val == 1) test(sampleData)
+    else if (val == 2) test(sampleData2)
+    else if (val == 3) test(sampleData3)
+    else console.log('Invalid Test No.')
+  }
+});
