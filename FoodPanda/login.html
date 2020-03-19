@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>FoodPanda</title>
+</head>
+<body>
+    <h1><%= member_ID %></h1>
+    <div>
+        <% item.forEach( function(i){ %>
+            <form action="/add_item" method="POST">
+            <p><img style="height: 10vw; width: 10vw;" src="/<%= i.ITEM_CODE %>.jpg"></p>
+            <label><%= i.ITEM_DESCRIPTION %>
+                <input type="hidden" name="item" value="<%= i.ITEM_CODE %>">
+            </label>
+        <div style="text-align: center;">
+            <h2>remark</h2>
+                <% i.remark.forEach( function(j){ %>
+                    <label><%= j.REMARK_DESCRIPTION %>
+                        <input type="radio" id="remark" name="<%= j.REMARK_DESCRIPTION.includes('ice') ? 'ice' : j.REMARK_DESCRIPTION.includes('sugar') ? 'sugar' : 'other' %>" value="<%= j.REMARK_ID %>">
+                    </label>
+                <% }) %>
+                <% if(i.LARGE_PRICE){ %>
+                    <label>LARGE: $<%= i.LARGE_PRICE %>
+                        <input type="radio" name="size" value="LARGE" checked>
+                    </label>
+                <% } %>
+                <% if(i.MIDDLE_PRICE){ %>
+                    <label>MIDDLE: $<%= i.MIDDLE_PRICE %>
+                        <input type="radio" name="size" value="MIDDLE">
+                    </label>
+                <% } %>
+        </div>
+        <br>
+        <input type="submit" value="add <%= i.ITEM_DESCRIPTION %>">
+    </form>
+        <% }) %>
+        <form action="/ordering" method="POST">
+        <input type="text" name="address" placeholder="address">
+        <p>district</p>
+        <select name="district">
+            <option value="Kowloon">
+                Kowloon
+            </option>
+            <option value="New_Territories">
+                New Territories
+            </option>
+            <option value="Hong_Kong_Island">
+                Hong Kong Island
+            </option>
+        </select>
+        <p>branch address</p>
+        <select name="branch">
+            <% branch.forEach( function(i){ %>
+            <option value="<%= i.BRANCH_CODE %>">
+                <%= i.BRANCH_ADDRESS %>
+            </option>
+            <% }) %>
+        </select>
+        <input type="submit" value="purchase">
+        </form>
+    </div>
+    <div>
+        added_item:
+        <% added_item.forEach( function(i,index){ %>
+            <p>item: <%= item[Number(i.code)-1].ITEM_DESCRIPTION %></p>
+            <p>size: <%= i.size %></p>
+            <p>remark</p>
+            <% i.remarks.forEach( function(j){ %>
+                <% if(j){ %>
+                    <li><%= remark_list[Number(j)-1].REMARK_DESCRIPTION %></li>
+                <% } %> 
+            <% }) %>
+            <form action="/delete_added_item" method="POST">
+                <input type="hidden" name="id" value="<%= index %>">
+                <input type="submit" value="delete" >
+            </form>
+        <% }) %>
+    </div>
+    <div>
+        <% ordered_list.forEach(function(i){ %>
+        <a href="api/order/<%= i.MEMBER %>" target="_blank">history</a>
+        <% }) %>
+    </div>
+    <script>
+    </script>
+</body>
+</html>

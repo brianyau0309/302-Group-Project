@@ -2,6 +2,11 @@
 const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const path = require("path")
+const fs = require('fs')
+const DBConn = require('../DBConn').DBConn
+const DBInfo = JSON.parse(fs.readFileSync("ShareTea.json"))
+const db = new DBConn(DBInfo)
 
 // Express Setup
 const app = express()
@@ -14,6 +19,16 @@ const orderRoutes = require('./orderRouter')
 const itemRoutes = require('./itemRouter')
 app.use('/api/item', itemRoutes)
 app.use('/api/order', orderRoutes)
+
+app.get('/api/branch', (req, res, next)=> {
+  db.execute(`SELECT * FROM branch`).then(async result => {
+    res.status(200).json(result.rows)
+  })
+})
+
+app.get('/', (req, res, next)=> {
+  res.status(200).sendFile(path.resolve('ShareTea/index.html'))
+})
 
 //Error Handling
 app.use((req, res, next) => {
