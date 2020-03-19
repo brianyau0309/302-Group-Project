@@ -28,3 +28,5 @@ ShareTea.json/FoodPanda.json:
 | node-fetch            | 2.6.0   | fetch polyfill            |
 | nodemon               | 2.0.2   | Monitor                   |
 | morgan                | 1.9.1   | Logger                    |
+| express-session       | ???     | Cookies                   |
+| ejs                   | ???     | Server Client Connection  |
