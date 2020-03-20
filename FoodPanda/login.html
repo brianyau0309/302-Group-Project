@@ -17,8 +17,12 @@
             <h2>remark</h2>
                 <% i.remark.forEach( function(j){ %>
                     <label><%= j.REMARK_DESCRIPTION %>
-                        <input type="radio" id="remark" name="<%= j.REMARK_DESCRIPTION.includes('ice') ? 'ice' : j.REMARK_DESCRIPTION.includes('sugar') ? 'sugar' : 'other' %>" value="<%= j.REMARK_ID %>">
+                        <input type="radio" id="remark"
+                            name="<%= j.REMARK_DESCRIPTION.includes('ice') ? 'ice' : j.REMARK_DESCRIPTION.includes('sugar') ? 'sugar' : 'other' %>"
+                            value="<%= j.REMARK_ID %>"
+                            <%= j.REMARK_DESCRIPTION.includes('normal') ? 'checked' : null %>>
                     </label>
+                    <span>|</span>
                 <% }) %>
                 <% if(i.LARGE_PRICE){ %>
                     <label>LARGE: $<%= i.LARGE_PRICE %>
@@ -77,12 +81,28 @@
             </form>
         <% }) %>
     </div>
-    <div>
+    <ul>
+        <li>History</li>
         <% ordered_list.forEach(function(i){ %>
-        <a href="api/order/<%= i.MEMBER %>" target="_blank">history</a>
+            <li>
+                <a href="api/order/<%= i.ORDER_ID %>" target="_blank"><%= i.ORDER_ID %></a>
+                <span><%= i.ORDER_STATE %></span>
+                <% if (i.ORDER_STATE === "producing" ) { %>
+                    <button onclick=delete_order('<%= i.ORDER_ID %>')>Delete Order</button>
+                <% } %>
+            </li>
         <% }) %>
-    </div>
+    </ul>
     <script>
+        function delete_order(order_id) {
+        fetch('http://localhost:3001/api/order/'+order_id, {method: 'DELETE'}).then(res => {
+            res.json().then(result => {
+            console.log('Delete Order: '+order_id)
+            console.log(result)
+            window.loaction.reload()
+            })
+        })
+        }
     </script>
 </body>
 </html>

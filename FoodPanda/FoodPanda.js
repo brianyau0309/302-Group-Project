@@ -8,28 +8,7 @@ const DBConn = require('../DBConn').DBConn
 const DBInfo = JSON.parse(fs.readFileSync("FoodPanda.json")) 
 const db = new DBConn(DBInfo)
 const fetch = require('node-fetch')
-const ejs = require('ejs')
 const session = require('express-session')
-
-const list_order =async (member_id) => {
-  return fetch('http://localhost:3001/api/orders/'+member_id).then(res => {
-    res.json().then(result => {
-      console.log('List out Orders that ordered by: '+ member_id)
-      console.log(result)
-      return result
-    })
-  })
-}
-
-const item_list =async () => {
-  return fetch('http://localhost:3000/api/item').then(res => {
-    res.json().then(result => {
-      console.log('List of items: ')
-      console.log(result)
-      return result
-    })
-  })
-}
 
 // Express Setup
 const app = express()
@@ -37,7 +16,7 @@ app.engine('html', require('ejs').renderFile)
 app.set('trust proxy', 1) 
 app.use(session({
   secret: 'keyboard cat',
-  resave: false,
+  resave: true,
   saveUninitialized: true,
   cookie: { secure: false }
 }))
@@ -51,6 +30,15 @@ const orderRoutes = require('./orderRouter')
 app.get('/api/orders/:member', async (req, res, next)=> {
   let member = req.params.member
   const data = await db.execute(`SELECT * FROM orders WHERE member = ${member}`)
+  res.status(200).json(data.rows)
+})
+app.get('/api/orders', async (req, res, next)=> {
+  let address = req.query.address, data
+  if (address) {
+    data = await db.execute(`SELECT * FROM orders WHERE client_address like '%${address}%'`)
+  } else {
+    data = await db.execute(`SELECT * FROM orders`)
+  }
   res.status(200).json(data.rows)
 })
 app.use('/api/order', orderRoutes)
