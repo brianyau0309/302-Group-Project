@@ -1,15 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+body {
+    background-image: url("index_bkg.jpg");
+}
+h1 {
+    text-align:center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+form {
+    text-align:center;
+    margin-bottom: 100px;
+}
+.content {
+    margin-top:50px;
+    border: solid;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+}
+.image {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    
+
+}
+img {
+    width: 300px;
+    height: 175px;
+    border-radius: 10px;
+}
+</style>
 <meta charset="utf-8">
 <title>FoodPanda</title>
 </head>
 <body>
+<div class="image">
+    <img src="/foodpanda_icon.png">
+</div>
+<div class="content">
     <h1>FoodPanda HomePage</h1>
     <form action="/login" method="POST">
-        <input type="text" placeholder="member_ID" name="member_ID">
-        <input type="password" placeholder="password" name="password">
+        Member ID:<input type="text" placeholder="member_ID" name="member_ID">
+        <br>
+        &nbsp;Password&nbsp;:&nbsp;<input type="password" placeholder="password" name="password">
+        <br>
         <input type="submit" value="login">
     </form>
+</div>
 </body>
 </html>

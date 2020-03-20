@@ -4,19 +4,97 @@
 <meta charset="utf-8">
 <title>FoodPanda</title>
 </head>
+<style>
+    body {
+    background-image: url("index_bkg.jpg");
+}
+    .product{
+        background-color: #f7e2d28a;
+        border: solid;
+        border-color: #5A5A5A;
+        margin-bottom: 2vh;
+        border-radius: 10px;
+        display: inline-block;
+        width: 48%;
+        height: 65vh;
+
+    }
+    .product-name{
+        display: block;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+        margin-left: 5px;
+    }
+    .image{
+        border-radius: 50%;
+        text-align:center;
+        height: 10vw;
+        width: 10vw;
+        display: block;
+        margin: auto;
+
+    }
+    .button{
+        margin: auto;
+        margin-bottom: 10px;
+        border: solid 1px;
+        border-radius: 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        display: block;
+    }
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .remark-detail{
+        font-size: 14px;
+    }
+    .large{
+        font-size: 15px;
+    }
+    .middle{
+        font-size: 15px;
+    }
+    .add{
+        border: solid;
+        border-color: #5A5A5A;
+        padding: 10px;
+        border-radius: 10px;
+        background-color:#f7e2d28a;
+        width:40%;
+        display: inline-block;
+        margin: auto;
+    }
+    .history {
+        border: solid;
+        border-color: #5A5A5A;
+        border-radius: 10px;
+        display: inline-block;
+        width:40%;
+        height:100%;
+        margin: 0 auto;
+        background-color:#f7e2d28a;
+    }
+    .order{
+        display:flex;
+        flex-flow:row;
+    
+    }
+    
+</style>
 <body>
     <h1><%= member_ID %></h1>
+    
     <div>
         <% item.forEach( function(i){ %>
-            <form action="/add_item" method="POST">
-            <p><img style="height: 10vw; width: 10vw;" src="/<%= i.ITEM_CODE %>.jpg"></p>
-            <label><%= i.ITEM_DESCRIPTION %>
+            <form class="product" action="/add_item" method="POST">
+            <p><img class="image" src="/<%= i.ITEM_CODE %>.jpg"></p>
+            <label class="product-name"><%= i.ITEM_DESCRIPTION %>
                 <input type="hidden" name="item" value="<%= i.ITEM_CODE %>">
             </label>
         <div style="text-align: center;">
-            <h2>remark</h2>
+            <h2>Remark</h2>
                 <% i.remark.forEach( function(j){ %>
-                    <label><%= j.REMARK_DESCRIPTION %>
+                    <label class="remark-detail"><%= j.REMARK_DESCRIPTION %>
                         <input type="radio" id="remark"
                             name="<%= j.REMARK_DESCRIPTION.includes('ice') ? 'ice' : j.REMARK_DESCRIPTION.includes('sugar') ? 'sugar' : 'other' %>"
                             value="<%= j.REMARK_ID %>"
@@ -24,24 +102,46 @@
                     </label>
                     <span>|</span>
                 <% }) %>
+                <br>
                 <% if(i.LARGE_PRICE){ %>
-                    <label>LARGE: $<%= i.LARGE_PRICE %>
+                    <label class="large">LARGE: $<%= i.LARGE_PRICE %>
                         <input type="radio" name="size" value="LARGE" checked>
                     </label>
                 <% } %>
                 <% if(i.MIDDLE_PRICE){ %>
-                    <label>MIDDLE: $<%= i.MIDDLE_PRICE %>
+                    <label class="middle">MIDDLE: $<%= i.MIDDLE_PRICE %>
                         <input type="radio" name="size" value="MIDDLE">
                     </label>
                 <% } %>
         </div>
         <br>
-        <input type="submit" value="add <%= i.ITEM_DESCRIPTION %>">
+        <input class="button" type="submit" value="add <%= i.ITEM_DESCRIPTION %>">
     </form>
         <% }) %>
-        <form action="/ordering" method="POST">
+        
+    </div>
+    <div class="order">
+    <div class="add">
+        added_item:
+        <% added_item.forEach( function(i,index){ %>
+            <p>item: <%= item[Number(i.code)-1].ITEM_DESCRIPTION %></p>
+            <p>size: <%= i.size %></p>
+            <p>remark</p>
+            <% i.remarks.forEach( function(j){ %>
+                <% if(j){ %>
+                    <li><%= remark_list[Number(j)-1].REMARK_DESCRIPTION %></li>
+                <% } %> 
+            <% }) %>
+            <form action="/delete_added_item" method="POST">
+                <input type="hidden" name="id" value="<%= index %>">
+                <input type="submit" value="delete" >
+            </form>
+        <% }) %>
+    
+        <form class="address" action="/ordering" method="POST">
+        <p>Address:</p>
         <input type="text" name="address" placeholder="address">
-        <p>district</p>
+        <p>district:</p>
         <select name="district">
             <option value="Kowloon">
                 Kowloon
@@ -64,23 +164,7 @@
         <input type="submit" value="purchase">
         </form>
     </div>
-    <div>
-        added_item:
-        <% added_item.forEach( function(i,index){ %>
-            <p>item: <%= item[Number(i.code)-1].ITEM_DESCRIPTION %></p>
-            <p>size: <%= i.size %></p>
-            <p>remark</p>
-            <% i.remarks.forEach( function(j){ %>
-                <% if(j){ %>
-                    <li><%= remark_list[Number(j)-1].REMARK_DESCRIPTION %></li>
-                <% } %> 
-            <% }) %>
-            <form action="/delete_added_item" method="POST">
-                <input type="hidden" name="id" value="<%= index %>">
-                <input type="submit" value="delete" >
-            </form>
-        <% }) %>
-    </div>
+    <div class="history">
     <ul>
         <li>History</li>
         <% ordered_list.forEach(function(i){ %>
@@ -93,6 +177,9 @@
             </li>
         <% }) %>
     </ul>
+    </div>
+    </div>
+    
     <script>
         function delete_order(order_id) {
         fetch('http://localhost:3001/api/order/'+order_id, {method: 'DELETE'}).then(res => {
@@ -104,5 +191,6 @@
         })
         }
     </script>
+    
 </body>
 </html>
