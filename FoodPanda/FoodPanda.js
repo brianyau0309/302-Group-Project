@@ -74,10 +74,12 @@ app.post('/login',async (req, res, next) => {
       const member_ID = req.body.member_ID
       const password = req.body.password
       const member_data = await db.execute(`SELECT * FROM member WHERE member_id = '${member_ID}' and password='${password}'`)
-      if (member_data !== [] ){
+      if (member_data.rows[0]){
         req.session.member_ID = member_ID
         member = JSON.stringify({"member_ID": member_ID})
         res.redirect(`/logined`, 302)
+      } else {
+        res.status(400).json({'Error': 'Invalid ID or Password'})
       }
   }
   catch (err) {
@@ -145,6 +147,7 @@ app.post('/ordering', async (req, res,next) => {
     order_time: new Date().toLocaleString().replace('/', '-').replace(',', '') ,
     order_items: order_item
   }
+  console.log(clientData)
   fetch('http://localhost:3001/api/order', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

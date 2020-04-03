@@ -1,18 +1,20 @@
 'use stritc'
+// Express Setup
 const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const app = express()
+app.use(morgan('dev'))
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
+// required libary
 const path = require("path")
 const fs = require('fs')
 const DBConn = require('../DBConn').DBConn
 const DBInfo = JSON.parse(fs.readFileSync("ShareTea.json"))
 const db = new DBConn(DBInfo)
-
-// Express Setup
-const app = express()
-app.use(morgan('dev'))
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
 
 // Router
 const orderRoutes = require('./orderRouter')
@@ -45,6 +47,11 @@ app.use((error, req, res, next) => {
   })
 })
 
-app.listen(3000, () => {
-  console.log('ShareTea Nodejs Server: Port 3000')
-})
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on("disconnect", () => {
+    console.log("a user go out");
+  });
+});
+
+server.listen(3000)

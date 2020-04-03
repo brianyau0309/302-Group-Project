@@ -17,7 +17,7 @@ class Order {
   get_item_code(order_id){
     return new Promise((resolve, reject) => {
       let get_item_code = `
-        SELECT a.order_ID, a.item_code, b.item_description, a.item_seq, a.item_price, a.item_size
+        SELECT a.item_code, b.item_description, a.item_seq, a.item_price, a.item_size
         FROM ORDER_ITEM a, ITEM b
         WHERE a.item_code=b.item_code and a.order_ID='${order_id}'
       `
@@ -31,7 +31,7 @@ class Order {
   get_remark(item_code, orderID, item_seq){
     return new Promise((resolve, reject) => {
       let get_item_remark = `
-        SELECT a.order_ID, a.item_code, a.item_seq, b.remark_price, b.remark_description
+        SELECT b.remark_description, b.remark_price
         FROM order_remark a, item_remark b 
         WHERE a.item_remark=b.remark_ID and a.order_ID='${orderID}' and a.item_code='${item_code}' and a.item_seq=${item_seq}
       `
