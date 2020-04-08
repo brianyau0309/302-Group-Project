@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Order = require('./Order')
 const order = new Order
+const fetch = require('node-fetch')
 
 
 router.get('/:id', async (req, res, next) => {
@@ -49,6 +50,7 @@ router.post('/', (req, res, next) => {
           })
         })
         // Response Success Message
+        fetch('http://localhost:3000/api/reload',{method: 'POST'})
         res.status(200).json({ order: 'Success', order_id: String(order_id).padStart(8,'0') })
       })
     } else {

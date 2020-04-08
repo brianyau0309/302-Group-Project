@@ -4,6 +4,7 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const app = express()
+app.engine('html', require('ejs').renderFile)
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
@@ -30,6 +31,26 @@ app.get('/api/branch', (req, res, next)=> {
 
 app.get('/', (req, res, next)=> {
   res.status(200).sendFile(path.resolve('ShareTea/index.html'))
+})
+
+app.get('/staff', async (req, res, next)=> {
+  data = await db.execute(`SELECT * FROM orders ORDER BY order_time DESC`).then(async result => {
+    for(o of result.rows) {
+      let items = await db.execute(`SELECT * FROM order_ITEM WHERE order_ID='${o.ORDER_ID}'`)
+      o['items']=items.rows
+      for(i of items.rows){
+        let remark = await db.execute(`SELECT * FROM order_remark WHERE order_ID='${i.ORDER_ID}' and item_code='${i.ITEM_CODE}' and item_seq='${i.ITEM_SEQ}'`)
+        i['remark']=remark.rows
+      }
+    }
+    res.render(path.resolve('ShareTea/staff.html'),{orders: result.rows})
+  })
+})
+
+app.post('/api/reload', (req,res,next) => {
+  io.emit('reload')
+  console.log('reload')
+  res.status(200)
 })
 
 //Error Handling

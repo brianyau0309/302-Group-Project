@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ShareTea</title>
+<style>
+  .orders {
+    display: flex;
+    flex-flow: row wrap;
+  }
+  .order{
+    background: lightgray;
+    margin: 1%; 
+    padding: 1%; 
+    width: 28%;
+  }
+  .items{
+    margin: 5%; 
+    padding: 5%; 
+  }
+  .remark{
+    margin: 10%; 
+    padding: 10%; 
+  }
+</style>
+</head>
+<body>
+
+    <h1>ShareTea Staff Page</h1>
+
+    <div class="orders">
+      <% orders.forEach(function(o){ %>
+        <div class="order">
+          <div>Order ID: <%= o.ORDER_ID %></div>
+          <div>Branch ID: <%= o.BRANCH %></div>
+          <div>Date: <%= new Date(o.ORDER_TIME).toLocaleString() %></div>
+          <div class="items">
+            <% o.items.forEach( function(i) { %>
+              <div>Item Code: <%= i.ITEM_CODE %></div>
+              <div>Item Sequence: <%= i.ITEM_SEQ %></div>
+              <div>Item price: <%= i.ITEM_PRICE %></div>
+              <div>Item size: <%= i.ITEM_SIZE %></div>
+              <div class="remark">
+                <% i.remark.forEach( function(r){ %>
+                  <div>Item remark: <%= r.ITEM_REMARK %></div>
+                <% }) %>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
+    <script>
+        socket = io.connect('ws://localhost:3000')
+        socket.on('reload', () => {
+          window.location.reload()
+        })
+    </script>
+
+</body>
+</html>
