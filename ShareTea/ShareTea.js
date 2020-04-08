@@ -48,10 +48,12 @@ app.use((error, req, res, next) => {
 })
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log('a user connected')
   socket.on("disconnect", () => {
-    console.log("a user go out");
-  });
-});
+    console.log("a user go out")
+  })
+})
 
-server.listen(3000)
+server.listen(3000, () => {
+  console.log('ShareTea Nodejs Server: Port 3000')
+})

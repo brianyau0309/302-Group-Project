@@ -53,6 +53,7 @@ router.post('/', async (req, res, next) => {
                   INSERT INTO orders (order_id, member, client_address, order_state, dates, total_price, sharetea_order)
                   VALUES (LPAD(orders_pk.NEXTVAL,8,0), '${clientData.member_id}', '${clientData.address}', 'producing', TO_DATE('${clientData.order_time}','yyyy/mm/dd hh24:mi:ss'), ${Number(total.toFixed(1))}, '${result.order_id}')
                   `, 'orders_pk')
+                fetch('http://localhost:3001/api/reload',{method: 'POST'})
                 res.status(200).json({order: 'Success', order_id: String(order_id.lastRowid).padStart(8,'0') })
               })
             })

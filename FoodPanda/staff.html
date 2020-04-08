@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>FoodPanda</title>
+<style>
+  .orders {
+    display: flex;
+    flex-flow: row wrap;
+  }
+  .order{
+    background: lightgray;
+    margin: 1%; 
+    padding: 1%; 
+    width: 28%;
+  }
+</style>
+</head>
+<body>
+
+    <h1>FoodPanda Staff Page</h1>
+
+    <div class="orders">
+      <% orders.forEach(function(o){ %>
+        <div class="order">
+          <div>Order ID: <%= o.ORDER_ID %></div>
+          <div>Member ID: <%= o.MEMBER %></div>
+          <div>Date: <%= new Date(o.DATES).toLocaleString() %></div>
+          <div>Client Address: <%= o.CLIENT_ADDRESS %></div>
+        </div>
+      <% }) %>
+    </div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
+    <script>
+        socket = io.connect('ws://localhost:3001')
+        socket.on('reload', () => {
+          window.location.reload()
+        })
+    </script>
+
+</body>
+</html>

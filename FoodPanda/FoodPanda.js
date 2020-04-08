@@ -1,16 +1,9 @@
 'use stritc'
+// Express Setup
 const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
-const fs = require('fs')
-const path = require("path")
-const DBConn = require('../DBConn').DBConn
-const DBInfo = JSON.parse(fs.readFileSync("FoodPanda.json")) 
-const db = new DBConn(DBInfo)
-const fetch = require('node-fetch')
 const session = require('express-session')
-
-// Express Setup
 const app = express()
 app.engine('html', require('ejs').renderFile)
 app.set('trust proxy', 1) 
@@ -24,6 +17,15 @@ app.use(express.static('static'))
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
+// required libary
+const fs = require('fs')
+const path = require("path")
+const DBConn = require('../DBConn').DBConn
+const DBInfo = JSON.parse(fs.readFileSync("FoodPanda.json")) 
+const db = new DBConn(DBInfo)
+const fetch = require('node-fetch')
 
 // Router
 const orderRoutes = require('./orderRouter')
@@ -45,6 +47,10 @@ app.use('/api/order', orderRoutes)
 
 app.get('/', (req, res, next)=> {
   res.status(200).sendFile(path.resolve('FoodPanda/index.html'))
+})
+app.get('/staff', async (req, res, next)=> {
+  data = await db.execute(`SELECT * FROM orders WHERE staff IS NULL`)
+  res.render(path.resolve('FoodPanda/staff.html'),{orders: data.rows})
 })
 
 app.get('/logined',async (req, res, next)=> {
@@ -170,6 +176,11 @@ app.post('/ordering', async (req, res,next) => {
     res.status(400).json({ Error: err })
   }
 })
+app.post('/api/reload', (req,res,next) => {
+  io.emit('reload')
+  console.log('reload')
+  res.status(200)
+})
 
 //Error Handling
 app.use((req, res, next) => {
@@ -186,6 +197,13 @@ app.use((error, req, res, next) => {
   })
 })
 
-app.listen(3001, () => {
+io.on('connection', (socket) => {
+  console.log('a user connected')
+  socket.on("disconnect", () => {
+    console.log("a user go out")
+  })
+})
+
+server.listen(3001, () => {
   console.log('FoodPanda Nodejs Server: Port 3001')
 })
