@@ -48,6 +48,19 @@ app.use('/api/order', orderRoutes)
 app.get('/', (req, res, next)=> {
   res.status(200).sendFile(path.resolve('FoodPanda/index.html'))
 })
+
+app.get('/adminlogin', (req, res, next)=> {
+  res.status(200).sendFile(path.resolve('FoodPanda/admin_login.html'))
+})
+
+app.get('/adminpage', (req, res, next)=> {
+  res.status(200).sendFile(path.resolve('FoodPanda/adminpage.html'))
+})
+
+app.get('/adminchpw', (req, res, next)=> {
+  res.status(200).sendFile(path.resolve('FoodPanda/adminchpw.html'))
+})
+
 app.get('/staff', async (req, res, next)=> {
   data = await db.execute(`SELECT * FROM orders WHERE staff IS NULL`)
   res.render(path.resolve('FoodPanda/staff.html'),{orders: data.rows})
@@ -90,6 +103,31 @@ app.post('/login',async (req, res, next) => {
   }
   catch (err) {
     res.status(400).json({ Error: err })
+  }
+})
+
+app.post('/api/adminlogin', async (req, res, next) => {
+  staff_id = req.body.staff_id
+  password = req.body.password
+  console.log(staff_id, password)
+  if (staff_id === `1` && password === `1`){ 
+  res.redirect(`/adminpage`, 302)}
+  else {
+    res.status(400).json({'Error' : 'Invalid ID or Password'})}
+})
+
+app.post('/api/password', async (req, res, next) => {
+  member_id = req.body.member_ID
+  old_pass = req.body.OldPassword
+  new_pass = req.body.NewPassword
+  console.log(member_id, old_pass, new_pass)
+  let password = await db.execute(`SELECT password FROM member WHERE member_id = '${member_id}' AND password = '${old_pass}'`)
+  console.log(password)
+  if (password.rows.length === 1) {
+    let result = await db.execute(`UPDATE member SET password = '${new_pass}' WHERE member_id = '${member_id}'`)
+    res.status(200).json({'Success': 'Password Changed', 'Result': result})
+  } else {
+    res.status(400).json({'Error': 'Invalid Password'})
   }
 })
 

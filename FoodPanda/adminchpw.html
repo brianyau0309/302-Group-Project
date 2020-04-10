@@ -1,0 +1,20 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Changing password</title>
+</head>
+<body>
+  <center><img src="/foodpanda_icon.png" alt="logo" id="adminlogo">
+  <h1>Changing password</h1>
+  
+    <form action="http://localhost:3001/api/password" method="POST">
+  Customerid: <input type="text" name="member_ID"></input><br/>
+  Current Password: <input type="password" name="OldPassword"></input><br/>
+  New password : <input type="password" name="NewPassword"/>
+  <button type="submit">Login</button>
+    </form>
+  </center>
+</body>
+</html>
