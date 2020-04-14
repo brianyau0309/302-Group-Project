@@ -90,7 +90,7 @@ app.get('/logined',async (req, res, next)=> {
 
 app.post('/login',async (req, res, next) => {
   try {
-      const member_ID = req.body.member_ID
+      const member_ID = req.body.member_ID 
       const password = req.body.password
       const member_data = await db.execute(`SELECT * FROM member WHERE member_id = '${member_ID}' and password='${password}'`)
       if (member_data.rows[0]){
