@@ -1,12 +1,6 @@
 # 302 Group Project
 
-`npm install`: Install Modules
-
-`npm run ShareTea`: Start ShareTea Server
-
-`npm run FoodPanda`: Start Food Panda Server
-
-`npm test 1/2/3`: Run test file with different sample data by using parameter 1/2/3
+Account, Password and IP of Databases
 
 ShareTea.json/FoodPanda.json:
 
@@ -17,6 +11,12 @@ ShareTea.json/FoodPanda.json:
   "connectString" : "Database IP"
 }
 ```
+
+`npm install`: Install Modules
+
+`npm run ShareTea`: Start ShareTea Server (http://localhost:3000)
+
+`npm run FoodPanda`: Start Food Panda Server (http://localhost:3001)
 
 | Tools                 | Version | Description               |
 |-----------------------|---------|---------------------------|
