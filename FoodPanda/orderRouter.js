@@ -78,6 +78,7 @@ router.delete('/:id', async (req,res,next) => {
     response.json().then(async result => {
       if (result.delete_order === 'Success') {
         let deleteResult = await db.execute(`DELETE FROM orders WHERE order_id = ${order_id}`)
+        fetch('http://localhost:3001/api/reload',{method: 'POST'})
         res.status(200).json({delete_order: 'Success'})
       } else {
         res.status(400).json({delete_order: 'Error'})

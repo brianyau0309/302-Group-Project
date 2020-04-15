@@ -66,6 +66,7 @@ router.delete('/:id', (req, res, next) => {
   let order_id = req.params.id
   order.deleteOrder(order_id).then(result => {
     console.log('Delete Order: '+order_id)
+    fetch('http://localhost:3000/api/reload',{method: 'POST'})
     res.status(200).json({ delete_order: 'Success' })
   }).catch(err => {
     res.status(400).json({ Error: err })

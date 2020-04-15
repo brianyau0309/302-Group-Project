@@ -15,12 +15,12 @@
     width: 28%;
   }
   .items{
-    margin: 5%; 
-    padding: 5%; 
+    margin: 2%; 
+    padding: 2%; 
   }
   .remark{
-    margin: 10%; 
-    padding: 10%; 
+    margin: 4%; 
+    padding: 4%; 
   }
 </style>
 </head>
@@ -37,12 +37,13 @@
           <div class="items">
             <% o.items.forEach( function(i) { %>
               <div>Item Code: <%= i.ITEM_CODE %></div>
+              <div>Item Description: <%= i.ITEM_DESCRIPTION %></div>
               <div>Item Sequence: <%= i.ITEM_SEQ %></div>
               <div>Item price: <%= i.ITEM_PRICE %></div>
               <div>Item size: <%= i.ITEM_SIZE %></div>
               <div class="remark">
                 <% i.remark.forEach( function(r){ %>
-                  <div>Item remark: <%= r.ITEM_REMARK %></div>
+                  <div>Remark: <%= r.REMARK_DESCRIPTION %></div>
                 <% }) %>
               </div>
             <% }) %>

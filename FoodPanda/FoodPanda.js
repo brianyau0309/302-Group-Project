@@ -31,15 +31,15 @@ const fetch = require('node-fetch')
 const orderRoutes = require('./orderRouter')
 app.get('/api/orders/:member', async (req, res, next)=> {
   let member = req.params.member
-  const data = await db.execute(`SELECT * FROM orders WHERE member = ${member}`)
+  const data = await db.execute(`SELECT * FROM orders WHERE member = ${member} ORDER BY order_id`)
   res.status(200).json(data.rows)
 })
 app.get('/api/orders', async (req, res, next)=> {
   let address = req.query.address, data
   if (address) {
-    data = await db.execute(`SELECT * FROM orders WHERE client_address like '%${address}%'`)
+    data = await db.execute(`SELECT * FROM orders WHERE client_address like '%${address}% ORDER BY order_id'`)
   } else {
-    data = await db.execute(`SELECT * FROM orders`)
+    data = await db.execute(`SELECT * FROM orders ORDER BY order_id`)
   }
   res.status(200).json(data.rows)
 })

@@ -81,7 +81,7 @@
     .history {
         border: 2px solid gray;
         border-radius: 5px;
-        width:80%;
+        width:90%;
         margin: 10px auto;
         background-color:#f7e2d28a;
     }
@@ -130,7 +130,7 @@
     <div class="order">
     <div class="add">
         Added Item:
-        <ol>
+        <ol style="padding-left: 1vw;">
         <% added_item.forEach( function(i,index){ %>
             <li>
                 <div>item: <%= item[Number(i.code)-1].ITEM_DESCRIPTION %></div>
@@ -195,11 +195,12 @@
     
     <script>
         function delete_order(order_id) {
-        fetch('http://localhost:3001/api/order/'+order_id, {method: 'DELETE'}).then(res => {
-            res.json().then(result => {
-            console.log('Delete Order: '+order_id)
-            console.log(result)
-            window.loaction.reload()
+            const windowlocation = window.location
+            fetch('http://localhost:3001/api/order/'+order_id, {method: 'DELETE'}).then(res => {
+                res.json().then(result => {
+                console.log('Delete Order: '+order_id)
+                console.log(result)
+                windowlocation.reload()
             })
         })
         }

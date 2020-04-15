@@ -36,10 +36,10 @@ app.get('/', (req, res, next)=> {
 app.get('/staff', async (req, res, next)=> {
   data = await db.execute(`SELECT * FROM orders ORDER BY order_time DESC`).then(async result => {
     for(o of result.rows) {
-      let items = await db.execute(`SELECT * FROM order_ITEM WHERE order_ID='${o.ORDER_ID}'`)
+      let items = await db.execute(`SELECT a.*, b.item_description FROM order_ITEM a, item b WHERE a.item_code = b.item_code and a.order_ID='${o.ORDER_ID}'`)
       o['items']=items.rows
       for(i of items.rows){
-        let remark = await db.execute(`SELECT * FROM order_remark WHERE order_ID='${i.ORDER_ID}' and item_code='${i.ITEM_CODE}' and item_seq='${i.ITEM_SEQ}'`)
+        let remark = await db.execute(`SELECT a.*, b.remark_description FROM order_remark a, item_remark b WHERE a.item_remark = b.remark_id and a.order_ID='${i.ORDER_ID}' and a.item_code='${i.ITEM_CODE}' and a.item_seq='${i.ITEM_SEQ}'`)
         i['remark']=remark.rows
       }
     }
